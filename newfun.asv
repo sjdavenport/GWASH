@@ -1,0 +1,54 @@
+function [ out ] = h2sim( n, m, nref, h2, rho, method, do_standardize )
+% NEWFUN
+%--------------------------------------------------------------------------
+% ARGUMENTS
+% Mandatory
+% Optional
+%--------------------------------------------------------------------------
+% OUTPUT
+% 
+%--------------------------------------------------------------------------
+% EXAMPLES
+% 
+%--------------------------------------------------------------------------
+% Copyright (C) - 2023 - Samuel Davenport
+%--------------------------------------------------------------------------
+
+%%  Check mandatory input and get important constants
+%--------------------------------------------------------------------------
+
+%%  Add/check optional values
+%--------------------------------------------------------------------------
+if ~exist( 'opt1', 'var' )
+   % Default value
+   opt1 = 0;
+end
+
+%%  Main Function Loop
+%-------------------------------------------------------------------------
+[ chi2, X ] = gengenmodel( n, m, h2, rho, method);
+
+if do_standardize
+    X = X - mean(X);
+    X = X./std(X,0,1);
+end
+
+[ ldscores, ldscores_adjusted ] = ldscore_calc( X, 1 );
+[ ldsc_full, ldsc_intercept1, ldsc_conditional, ldratio] = ...
+                                h2ests( n, m, ldscores_adjusted, chi2, ldscores );
+orig_regression.ldsc_full = ldsc_full;
+orig_regression.ldsc_intercept1 = ldsc_intercept1;
+orig_regression.
+
+[ chi2_othersample, X_othersample ] = gengenmodel( nref, m, h2, rho, method);
+[ ldscores_othersample, ldscores_othersample_adjusted ] = ldscore_calc( X_othersample, 1 );
+[ ldsc_full_othersample, ldsc_intercept1_othersample, ldsc_conditional_othersample, ldratio_othersample] = ...
+           h2ests( nref, m, ldscores_othersample_adjusted, chi2_othersample, ldscores_othersample );
+
+% Using original chi2
+[ ldsc_full, ldsc_intercept1, ldsc_conditional, gwash, gwashmn] = ...
+           h2ests( n, m, ldscores_othersample_adjusted, chi2, ldscores_othersample );
+
+
+end
+
