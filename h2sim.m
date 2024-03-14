@@ -1,4 +1,5 @@
-function [ OG_h2, ref_h2, OG_h2_summary, ref_h2_summary ] = h2sim( n, m, nref, h2, rho, method, nsims, do_standardize )
+function [ OG_h2, ref_h2, OG_h2_summary, ref_h2_summary ] = ...
+            h2sim( n, m, nref, h2, rho, method, nsims, do_standardize )
 % h2sim( n, m, nref, h2, rho, method, do_standardize )
 %--------------------------------------------------------------------------
 % H2SIM Estimate heritability using LD score regression in a simulation setup.
@@ -40,17 +41,17 @@ if ~exist( 'do_standardize', 'var' )
 end
 
 %% Initialize the results
-OG_h2.ldsc_free = zeros(1,nsim);
-OG_h2.ldsc_free_intercept = zeros(1,nsim);
-OG_h2.ldsc_fixed_intercept = zeros(1,nsim);
-OG_h2.ldsc_conditional = zeros(1,nsim);
-OG_h2.ld_ratio = zeros(1,nsim);
+OG_h2.ldsc_free = zeros(1,nsims);
+OG_h2.ldsc_free_intercept = zeros(1,nsims);
+OG_h2.ldsc_fixed_intercept = zeros(1,nsims);
+OG_h2.ldsc_conditional = zeros(1,nsims);
+OG_h2.ld_ratio = zeros(1,nsims);
 
-ref_h2.ldsc_free = zeros(1,nsim);
-ref_h2.ldsc_free_intercept = zeros(1,nsim);
-ref_h2.ldsc_fixed_intercept = zeros(1,nsim);
-ref_h2.ldsc_conditional = zeros(1,nsim);
-ref_h2.ld_ratio = zeros(1,nsim);
+ref_h2.ldsc_free = zeros(1,nsims);
+ref_h2.ldsc_free_intercept = zeros(1,nsims);
+ref_h2.ldsc_fixed_intercept = zeros(1,nsims);
+ref_h2.ldsc_conditional = zeros(1,nsims);
+ref_h2.ld_ratio = zeros(1,nsims);
 
 %%  Main Function Loop
 %-------------------------------------------------------------------------
@@ -65,7 +66,6 @@ for I = 1:nsims
     [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 1 );
     [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
         h2ests( n, m, ldscores_adjusted, chi2, ldscores );
-    ldsc_free = ldsc_free(1);
 
     OG_h2.ldsc_free(I) = ldsc_free(1);
     OG_h2.ldsc_free_intercept(I) = ldsc_free(2);
@@ -89,34 +89,27 @@ for I = 1:nsims
     ref_h2.ld_ratio(I) = ld_ratio;
 end
 
-
-OG_h2.ldsc_free = zeros(1,nsim);
-OG_h2.ldsc_free_intercept = zeros(1,nsim);
-OG_h2.ldsc_fixed_intercept = zeros(1,nsim);
-OG_h2.ldsc_conditional = zeros(1,nsim);
-OG_h2.ld_ratio = zeros(1,nsim);
-
 OG_h2_summary.ldsc_free.mean = mean(OG_h2.ldsc_free);
-OG_h2_summary.ldsc_free.std = std(OG_h2.ldsc_free);
+OG_h2_summary.ldsc_free.ss = sum(OG_h2.ldsc_free.^2);
 OG_h2_summary.ldsc_free_intercept.mean = mean(OG_h2.ldsc_free_intercept);
-OG_h2_summary.ldsc_free_intercept.std = std(OG_h2.ldsc_free_intercept);
+OG_h2_summary.ldsc_free_intercept.ss = sum(OG_h2.ldsc_free_intercept.^2);
 OG_h2_summary.ldsc_fixed_intercept.mean = mean(OG_h2.ldsc_fixed_intercept);
-OG_h2_summary.ldsc_fixed_intercept.std = std(OG_h2.ldsc_fixed_intercept);
+OG_h2_summary.ldsc_fixed_intercept.ss = sum(OG_h2.ldsc_fixed_intercept.^2);
 OG_h2_summary.ldsc_conditional.mean = mean(OG_h2.ldsc_conditional);
-OG_h2_summary.ldsc_conditional.std = std(OG_h2.ldsc_conditional);
+OG_h2_summary.ldsc_conditional.ss = sum(OG_h2.ldsc_conditional.^2);
 OG_h2_summary.ld_ratio.mean = mean(OG_h2.ld_ratio);
-OG_h2_summary.ld_ratio.std = std(OG_h2.ld_ratio);
+OG_h2_summary.ld_ratio.ss = sum(OG_h2.ld_ratio.^2);
 
 ref_h2_summary.ldsc_free.mean = mean(ref_h2.ldsc_free);
-ref_h2_summary.ldsc_free.std = std(ref_h2.ldsc_free);
+ref_h2_summary.ldsc_free.ss = sum(ref_h2.ldsc_free.^2);
 ref_h2_summary.ldsc_free_intercept.mean = mean(ref_h2.ldsc_free_intercept);
-ref_h2_summary.ldsc_free_intercept.std = std(ref_h2.ldsc_free_intercept);
+ref_h2_summary.ldsc_free_intercept.ss = sum(ref_h2.ldsc_free_intercept.^2);
 ref_h2_summary.ldsc_fixed_intercept.mean = mean(ref_h2.ldsc_fixed_intercept);
-ref_h2_summary.ldsc_fixed_intercept.std = std(ref_h2.ldsc_fixed_intercept);
+ref_h2_summary.ldsc_fixed_intercept.ss = sum(ref_h2.ldsc_fixed_intercept.^2);
 ref_h2_summary.ldsc_conditional.mean = mean(ref_h2.ldsc_conditional);
-ref_h2_summary.ldsc_conditional.std = std(ref_h2.ldsc_conditional);
+ref_h2_summary.ldsc_conditional.ss = sum(ref_h2.ldsc_conditional.^2);
 ref_h2_summary.ld_ratio.mean = mean(ref_h2.ld_ratio);
-ref_h2_summary.ld_ratio.std = std(ref_h2.ld_ratio);
+ref_h2_summary.ld_ratio.ss = sum(ref_h2.ld_ratio.^2);
 
 end
 
