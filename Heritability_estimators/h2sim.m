@@ -81,6 +81,10 @@ for I = 1:nsims
     % end
     % [ chi2_othersample, X_othersample ] = gengenmodel( nref, m, h2, rho, method);
     X_othersample = Xgen( nref, m, rho, method );
+    if do_standardize
+        X_othersample = X_othersample - mean(X_othersample);
+        X_othersample = X_othersample./std(X_othersample,0,1);
+    end
     [ ldscores_othersample, ldscores_othersample_adjusted ] = ldscore_calc( X_othersample, 1 );
     % histogram(ldscores_othersample)
 
