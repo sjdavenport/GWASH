@@ -30,12 +30,7 @@ function [ chi2, X, phi ] = gengenmodel( n, m, h2, rho, method )
 
 %%  Add/check optional values
 %--------------------------------------------------------------------------
-if ~exist( 'smoothing_parameter', 'var' )
-   % Default value
-   rho = 0;
-end
-
-if ~exist( 'smoothing_parameter', 'var' )
+if ~exist( 'rho', 'var' )
    % Default value
    rho = 0;
 end

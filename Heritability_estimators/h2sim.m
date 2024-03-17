@@ -28,7 +28,7 @@ function [ OG_h2, ref_h2, OG_h2_summary, ref_h2_summary ] = ...
 %                         the reference sample.
 %--------------------------------------------------------------------------
 % EXAMPLES
-% 
+% [ OG_h2, ref_h2, OG_h2_summary, ref_h2_summary ] = h2sim( 1000, 1000, 1000, 0.2, 0.5, 'ar1', 100, 1 )
 %--------------------------------------------------------------------------
 % Copyright (C) - 2023 - Samuel Davenport
 %--------------------------------------------------------------------------
@@ -74,9 +74,15 @@ for I = 1:nsims
     OG_h2.ld_ratio(I) = ld_ratio;
 
     % [ chi2_othersample, X_othersample ] = gengenmodel( nref, m, h2, rho, method);
+    % X_othersample = Xgen( nref, m, rho, method );
+    % if do_standardize
+    %     X_othersample = X_othersample - mean(X_othersample);
+    %     X_othersample = X_othersample./std(X_othersample,0,1);
+    % end
+    % [ chi2_othersample, X_othersample ] = gengenmodel( nref, m, h2, rho, method);
     X_othersample = Xgen( nref, m, rho, method );
-
     [ ldscores_othersample, ldscores_othersample_adjusted ] = ldscore_calc( X_othersample, 1 );
+    % histogram(ldscores_othersample)
 
     % Using original chi2
     [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
