@@ -24,7 +24,6 @@ function [ ldsc_full, ldsc_intercept1, ldsc_conditional, ldratio, ldratiomn] = .
 %   ldsc_conditional    - Conditional LD score regression.
 %   gwash               - GWAS heritability estimate.
 %   gwashmn             - Conditional GWAS heritability estimate.
-%
 %--------------------------------------------------------------------------
 % EXAMPLES
 % 
@@ -45,7 +44,11 @@ end
 %%  Main Function Loop
 %--------------------------------------------------------------------------
 % Unconstrained ld score regression
+% design = [(ldscores_adjusted)'*(n/m)];
+% design = design - mean(design);
+% design = [design, ones(m,1)];
 design = [(ldscores_adjusted)'*(n/m), ones(m,1)];
+% design = [(ldscores)'*(n/m), ones(m,1)];
 % 
 ldsc_full = (design'*design)^(-1)*design'*chi2;
 % ldsc = ldsc(1);

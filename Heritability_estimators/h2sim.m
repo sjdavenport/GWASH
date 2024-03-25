@@ -56,14 +56,10 @@ ref_h2.ld_ratio = zeros(1,nsims);
 %%  Main Function Loop
 %-------------------------------------------------------------------------
 for I = 1:nsims
-    [ chi2, X ] = gengenmodel( n, m, h2, rho, method);
+    I
+    [ chi2, X ] = gengenmodel( n, m, h2, rho, method, do_standardize);
 
-    if do_standardize
-        X = X - mean(X);
-        X = X./std(X,0,1);
-    end
-
-    [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 1 );
+    [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 0 );
     [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
         h2ests( n, m, ldscores_adjusted, chi2, ldscores );
 
@@ -85,7 +81,7 @@ for I = 1:nsims
         X_othersample = X_othersample - mean(X_othersample);
         X_othersample = X_othersample./std(X_othersample,0,1);
     end
-    [ ldscores_othersample, ldscores_othersample_adjusted ] = ldscore_calc( X_othersample, 1 );
+    [ ldscores_othersample, ldscores_othersample_adjusted ] = ldscore_calc( X_othersample, 0 );
     % histogram(ldscores_othersample)
 
     % Using original chi2

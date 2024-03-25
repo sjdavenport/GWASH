@@ -1,4 +1,4 @@
-function [ chi2, X, phi ] = gengenmodel( n, m, h2, rho, method )
+function [ chi2, X, phi ] = gengenmodel( n, m, h2, rho, method, do_standardize )
 % GENGENMODEL Generate genetic model for LD score regression.
 %
 %   [chi2, X, phi] = GENGENMODEL(n, m, h2, rho, method) generates genetic 
@@ -60,6 +60,12 @@ beta = ((h2/m)^(1/2))*randn(m,1); % similar to gwash sims, once you normalize
 e = ((1-h2)^(1/2))*randn(n,1);
 
 phi = X*beta + e;
+if do_standardize
+    phi = phi - mean(phi);
+    phi = phi./std(phi,0,1);
+    X = X - mean(X);
+    X = X./std(X,0,1);
+end
 
 betahat = zeros(m,1);
 for j = 1:m
