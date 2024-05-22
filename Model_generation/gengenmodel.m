@@ -1,4 +1,4 @@
-function [ chi2, X, phi ] = gengenmodel( n, m, h2, rho, method, do_standardize )
+function [ chi2, X, phi ] = gengenmodel( n, m, h2, rho, method, do_standardize, distbn )
 % GENGENMODEL Generate genetic model for LD score regression.
 %
 %   [chi2, X, phi] = GENGENMODEL(n, m, h2, rho, method) generates genetic 
@@ -35,19 +35,23 @@ if ~exist( 'rho', 'var' )
    rho = 0;
 end
 
-if ~exist( 'do_loader', 'var' )
+if ~exist( 'distbn', 'var' )
    % Default value
-   do_loader = 1;
+   distbn = 'norm';
 end
-
 %%  Main Function Loop
 %--------------------------------------------------------------------------
 X = Xgen( n, m, rho, method );
 % X = X - mean(X);
 % X = X./std(X,0,1);
 
+if strcmp(distbn, 'norm')
 % iid beta
-beta = ((h2/m)^(1/2))*randn(m,1); % similar to gwash sims, once you normalize
+    beta = ((h2/m)^(1/2))*randn(m,1); % similar to gwash sims, once you normalize
+elseif strcmp(distbn(1), 't')
+    df = str2double(distbn(2:end));
+    beta = ((h2/m)^(1/2))*trnd(df, m,1)*sqrt((df-2)/df);
+end
 
 % Actually seems to improve if you makes the betas smooth!
 % smoothing_parameter = 30;

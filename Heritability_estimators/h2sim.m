@@ -1,5 +1,5 @@
 function [ OG_h2, ref_h2, OG_h2_summary, ref_h2_summary ] = ...
-            h2sim( n, m, nref, h2, rho, method, nsims, do_standardize )
+            h2sim( n, m, nref, h2, rho, method, nsims, do_standardize, distbn )
 % h2sim( n, m, nref, h2, rho, method, do_standardize )
 %--------------------------------------------------------------------------
 % H2SIM Estimate heritability using LD score regression in a simulation setup.
@@ -40,6 +40,10 @@ if ~exist( 'do_standardize', 'var' )
    do_standardize = 0;
 end
 
+if ~exist( 'distbn', 'var' )
+   % Default value
+   distbn = 'norm';
+end
 %% Initialize the results
 OG_h2.ldsc_free = zeros(1,nsims);
 OG_h2.ldsc_free_intercept = zeros(1,nsims);
@@ -57,7 +61,7 @@ ref_h2.ld_ratio = zeros(1,nsims);
 %-------------------------------------------------------------------------
 for I = 1:nsims
     I
-    [ chi2, X ] = gengenmodel( n, m, h2, rho, method, do_standardize);
+    [ chi2, X ] = gengenmodel( n, m, h2, rho, method, do_standardize, distbn);
 
     [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 0 );
     [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
