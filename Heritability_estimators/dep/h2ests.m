@@ -75,4 +75,3 @@ ldratio = (mean(chi2) - 1)/mean((ldscores_adjusted*(n/m))');
 ldratiomn = (mean(chi2) - 1)*(m/n);
 
 end
-

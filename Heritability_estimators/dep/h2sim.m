@@ -64,14 +64,14 @@ for I = 1:nsims
     [ chi2, X ] = gengenmodel( n, m, h2, rho, method, do_standardize, distbn);
 
     [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 0 );
-    [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
+    [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, gwash] = ...
         h2ests( n, m, ldscores_adjusted, chi2, ldscores );
 
     OG_h2.ldsc_free(I) = ldsc_free(1);
     OG_h2.ldsc_free_intercept(I) = ldsc_free(2);
     OG_h2.ldsc_fixed_intercept(I)= ldsc_fixed_intercept;
     OG_h2.ldsc_conditional(I) = ldsc_conditional;
-    OG_h2.ld_ratio(I) = ld_ratio;
+    OG_h2.ld_ratio(I) = gwash;
 
     % [ chi2_othersample, X_othersample ] = gengenmodel( nref, m, h2, rho, method);
     % X_othersample = Xgen( nref, m, rho, method );
@@ -89,14 +89,14 @@ for I = 1:nsims
     % histogram(ldscores_othersample)
 
     % Using original chi2
-    [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, ld_ratio] = ...
+    [ ldsc_free, ldsc_fixed_intercept, ldsc_conditional, gwash] = ...
         h2ests( n, m, ldscores_othersample_adjusted, chi2, ldscores_othersample );
 
     ref_h2.ldsc_free(I) = ldsc_free(1);
     ref_h2.ldsc_free_intercept(I) = ldsc_free(2);
     ref_h2.ldsc_fixed_intercept(I) = ldsc_fixed_intercept;
     ref_h2.ldsc_conditional(I) = ldsc_conditional;
-    ref_h2.ld_ratio(I) = ld_ratio;
+    ref_h2.ld_ratio(I) = gwash;
 end
 
 OG_h2_summary.ldsc_free.mean = mean(OG_h2.ldsc_free);
@@ -107,8 +107,8 @@ OG_h2_summary.ldsc_fixed_intercept.mean = mean(OG_h2.ldsc_fixed_intercept);
 OG_h2_summary.ldsc_fixed_intercept.ss = sum(OG_h2.ldsc_fixed_intercept.^2);
 OG_h2_summary.ldsc_conditional.mean = mean(OG_h2.ldsc_conditional);
 OG_h2_summary.ldsc_conditional.ss = sum(OG_h2.ldsc_conditional.^2);
-OG_h2_summary.ld_ratio.mean = mean(OG_h2.ld_ratio);
-OG_h2_summary.ld_ratio.ss = sum(OG_h2.ld_ratio.^2);
+OG_h2_summary.gwash.mean = mean(OG_h2.ld_ratio);
+OG_h2_summary.gwash.ss = sum(OG_h2.ld_ratio.^2);
 
 ref_h2_summary.ldsc_free.mean = mean(ref_h2.ldsc_free);
 ref_h2_summary.ldsc_free.ss = sum(ref_h2.ldsc_free.^2);
@@ -118,8 +118,8 @@ ref_h2_summary.ldsc_fixed_intercept.mean = mean(ref_h2.ldsc_fixed_intercept);
 ref_h2_summary.ldsc_fixed_intercept.ss = sum(ref_h2.ldsc_fixed_intercept.^2);
 ref_h2_summary.ldsc_conditional.mean = mean(ref_h2.ldsc_conditional);
 ref_h2_summary.ldsc_conditional.ss = sum(ref_h2.ldsc_conditional.^2);
-ref_h2_summary.ld_ratio.mean = mean(ref_h2.ld_ratio);
-ref_h2_summary.ld_ratio.ss = sum(ref_h2.ld_ratio.^2);
+ref_h2_summary.gwash.mean = mean(ref_h2.ld_ratio);
+ref_h2_summary.gwash.ss = sum(ref_h2.ld_ratio.^2);
 
 end
 

@@ -9,7 +9,8 @@ function [ ldscores, ldscores_adjusted ] = ldscore_calc( X, do_loader )
 % 
 %--------------------------------------------------------------------------
 % EXAMPLES
-% 
+% [ chi2, X ] = gengenmodel( 1000, 1000, 0.2, 0.5, 'ar1', 1);
+% [ ldscores, ldscores_adjusted ] = ldscore_calc( X, 0 );
 %--------------------------------------------------------------------------
 % Copyright (C) - 2023 - Samuel Davenport
 %--------------------------------------------------------------------------
@@ -41,7 +42,6 @@ for j = 1:m
 end
 
 ldscores_adjusted = ldscores - (m-ldscores)/(n-2);
-
 
 end
 
